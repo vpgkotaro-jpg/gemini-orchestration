@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8"><title>AIの使い分け</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{width:1600px;height:1450px;background:#f6f5f1;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;color:#1d1d1b;padding:52px 64px}
+body{width:1600px;height:1530px;background:#f6f5f1;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;color:#1d1d1b;padding:52px 64px}
 h1{font-size:46px;font-weight:800}
 .sub{font-size:21px;color:#6b6a64;margin-top:8px}
 .top{display:flex;align-items:center;gap:22px;margin-top:28px}
@@ -31,7 +31,7 @@ h1{font-size:46px;font-weight:800}
 .foot div{flex:1;background:#fff;border-radius:14px;padding:12px 18px;border-left:6px solid #1d1d1b}
 </style></head><body>
 <h1>AIの使い分け</h1>
-<div class="sub">窓口はぜんぶ Claude Code。「どのAIの頭を使うか」「どのAPIにお金・枠を使うか」「どのCLIで動かすか」の3つで振り分ける</div>
+<div class="sub">窓口はぜんぶ Claude Code。「どのAIの頭を使うか」「どのAPIにお金・枠を使うか」「どのCLIで動かすか」の3つで振り分ける。目的は節約ではなく出力の質を最大にすること</div>
 <div class="top"><div class="you">あなたの依頼</div><div class="to">→</div>
 <div class="hub"><b>Claude Code（窓口）</b><span>依頼を整理 → 担当を決める → 結果を確認して報告</span></div></div>
 
@@ -52,7 +52,7 @@ h1{font-size:46px;font-weight:800}
  <div class="card" style="--c:#1f9d6a"><h3>Gemini API</h3><div class="r">使う（gask 経由だけ）</div>
   <ul><li>無料枠：1日 約20回/モデル</li><li>1日 200万トークン・画像10枚で自動停止</li><li>数字は生データと自動照合（⚠️ は使わない）</li></ul><div class="n">キーは Mac のキーチェーン／クラウドは Network secrets</div></div>
  <div class="card" style="--c:#d97757"><h3>Claude・Codex</h3><div class="r">API は使わない（契約プランの枠）</div>
-  <ul><li>Claude Code ＝ Claude の契約</li><li>Codex CLI ＝ ChatGPT の契約</li><li>API キーの従量課金はしない</li></ul><div class="n">重い作業は Codex に回して Claude の枠を節約</div></div>
+  <ul><li>Claude Code ＝ Claude の契約</li><li>Codex CLI ＝ ChatGPT の契約</li><li>相互レビュー・高い推論レベルで質を上げる</li><li>API キーの従量課金はしない</li></ul><div class="n">枠内なら質のために使い切る（月で余らせない）</div></div>
  <div class="card" style="--c:#8a8880"><h3>Google AI Pro</h3><div class="r">API の枠は増えない</div>
   <ul><li>Pro・5TB は API とは別勘定</li><li>枠を増やすなら AI Studio で支払い設定</li><li>上限で止まったら勝手に延長しない</li></ul><div class="n">延長・課金はあなたが決める</div></div>
 </div></div>
@@ -60,7 +60,7 @@ h1{font-size:46px;font-weight:800}
 <div class="sec"><div class="sh"><span class="num">3</span><h2>CLIの使い分け</h2><p>Claude Code がどのコマンドで動かすか</p></div>
 <div class="row c4">
  <div class="card" style="--c:#2f6fd6"><h3>codex</h3><div class="r">実装・レビュー</div>
-  <ul><li>実装 <code>-s workspace-write</code></li><li>レビュー <code>-s read-only</code></li><li>どちらも <code>codex exec</code></li></ul><div class="n">結果は必ず Claude が差分を確認</div></div>
+  <ul><li>実装 <code>-s workspace-write</code></li><li>レビュー <code>-s read-only</code></li><li>どちらも <code>codex exec</code>・推論 high</li></ul><div class="n">Codex↔Claude で互いにレビュー</div></div>
  <div class="card" style="--c:#1f9d6a"><h3>gask</h3><div class="r">Gemini を呼ぶ唯一の入口</div>
   <ul><li><code>gask image</code> 画像</li><li><code>gask summarize</code> 大量資料</li><li><code>gask analyze</code> GA</li></ul><div class="n"><code>gemini -p</code> は直接呼ばない</div></div>
  <div class="card" style="--c:#7a5cd6"><h3>agy（Antigravity）</h3><div class="r">事業判断のクロスチェック</div>

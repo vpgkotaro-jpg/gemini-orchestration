@@ -1,5 +1,5 @@
 ## AI の使い分け（窓口は Claude Code）
-Claude Code が窓口。「AI」「API」「CLI」の3つで振り分ける。迷ったら Claude が自分でやる。図: docs/ai-routing.png
+Claude Code が窓口。「AI」「API」「CLI」の3つで振り分ける。目的は出力の質を最大にすること（節約ではない）。契約プランの枠内なら遠慮なく使い、月の枠を余らせない。迷ったら Claude が自分でやる。図: docs/ai-routing.png
 
 ### 1. AI（どの頭脳に考えさせるか）
 | 担当 | 任せるもの |
@@ -11,14 +11,16 @@ Claude Code が窓口。「AI」「API」「CLI」の3つで振り分ける。�
 
 ### 2. API（お金・回数の枠をどこで使うか）
 - Gemini API: gask 経由だけで使う。無料枠は1日あたり約20回（モデルごと）。画像・大量資料・GA 以外では使わない
-- Claude・Codex: API キーの従量課金はしない（Claude Code と Codex CLI の契約プランの枠で動かす）。重い作業は Codex に回して Claude の枠を節約
+- Claude・Codex: API キーの従量課金はしない（Claude Code と Codex CLI の契約プランの枠で動かす）。枠内なら質のために積極的に使う（相互レビュー・高い推論レベル）。枠の上限に近づいたときだけ控える
 - Google AI Pro（5TB含む）は API の枠を増やさない。上限で止まったら勝手に延長・課金しない（本人が決める）
 - キー: Mac はキーチェーン（set-key.sh）、クラウドは Network secrets。キーの値を扱わない
 
 ### 3. CLI（どのコマンドで動かすか）
 - `codex`: 実装 `codex exec -s workspace-write -C <作業フォルダ> -o <結果ファイル> "<具体的な指示。対象ファイル・完了条件>"` / レビュー・調査 `codex exec -s read-only -C <作業フォルダ> -o <結果ファイル> "<指示>"`
   - Bash の timeout は 600000。長くなりそうなら run_in_background
+  - 推論レベルは高めにする: `-c model_reasoning_effort="high"` を付ける
   - Codex の結果は必ず Claude が差分と動作を確認してから採用する（そのまま報告しない）
+  - 逆に Claude が書いた大事なコード・重要な文章の論理も、仕上げ前に Codex（read-only）にレビューさせる（相互チェックで質を上げる）
   - codex コマンドが無い環境（クラウドなど）や Codex が失敗したときは、Claude が自分でやる
 - `gask`: Gemini を呼ぶ唯一の入口（`gemini -p` は直接呼ばない）。使い方は下の「Gemini CLI 連携」
 - `agy --mode plan`: 大事な事業判断を Gemini の目でクロスチェック（Pro ログインで動く）
