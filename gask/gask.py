@@ -126,6 +126,11 @@ def cache_key(args, prompt, model):
     return h.hexdigest()[:24]
 
 
+def _txt(b):
+    # タイムアウト時は text=True でも bytes が返ることがある
+    return b.decode(errors="replace") if isinstance(b, bytes) else (b or "")
+
+
 def run_gemini(prompt, model, timeout, workdir):
     gem = os.environ.get("GASK_GEMINI_BIN", "gemini")
     cmd = [gem, "-o", "stream-json", "--approval-mode", "yolo", "--skip-trust"]
@@ -141,7 +146,7 @@ def run_gemini(prompt, model, timeout, workdir):
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=workdir, env=env)
     except subprocess.TimeoutExpired as e:
         return {"error": f"タイムアウト（{timeout}秒）。依頼を小さく分けるか --timeout を延ばしてください",
-                "stdout": e.stdout or "", "stderr": e.stderr or "", "sec": timeout}
+                "stdout": _txt(e.stdout), "stderr": _txt(e.stderr), "sec": timeout}
     return {"stdout": p.stdout, "stderr": p.stderr, "code": p.returncode, "sec": round(time.time() - t0, 1)}
 
 
