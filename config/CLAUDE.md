@@ -1,23 +1,28 @@
 ## AI の使い分け（窓口は Claude Code）
-Claude Code が窓口。作業ごとに次の担当へ振る。迷ったら Claude が自分でやる。
+Claude Code が窓口。「AI」「API」「CLI」の3つで振り分ける。迷ったら Claude が自分でやる。図: docs/ai-routing.png
 
+### 1. AI（どの頭脳に考えさせるか）
 | 担当 | 任せるもの |
 |---|---|
 | Codex（先に使う） | まとまった実装・リファクタ・テスト作成・コードレビュー（目安: 複数ファイル or 数十行以上） |
 | Claude（窓口＋仕上げ） | 依頼の整理、Codex の結果の確認・手直し、日本語の文章、事業判断、数行の小さな修正 |
-| Gemini API（gask） | 画像・図・アイコンの生成/編集、数万字以上の資料の要約、GA データ分析だけ |
+| Gemini（ここぞの時だけ） | 画像・図・アイコンの生成/編集、数万字以上の資料の要約、GA データ分析だけ |
 | Gemini アプリ（本人の Pro） | 手で作る画像・動画、Deep Research、NotebookLM（Claude からは呼ばない。必要なら本人に勧める） |
 
-### Codex の呼び方
-- 実装: `codex exec -s workspace-write -C <作業フォルダ> -o <結果ファイル> "<具体的な指示。対象ファイル・完了条件>"`
-- レビュー・調査: `codex exec -s read-only -C <作業フォルダ> -o <結果ファイル> "<指示>"`
-- Bash の timeout は 600000。長くなりそうなら run_in_background
-- Codex の結果は必ず Claude が差分と動作を確認してから採用する（そのまま報告しない）
-- codex コマンドが無い環境（クラウドなど）や Codex が失敗したときは、Claude が自分でやる
+### 2. API（お金・回数の枠をどこで使うか）
+- Gemini API: gask 経由だけで使う。無料枠は1日あたり約20回（モデルごと）。画像・大量資料・GA 以外では使わない
+- Claude・Codex: API キーの従量課金はしない（Claude Code と Codex CLI の契約プランの枠で動かす）。重い作業は Codex に回して Claude の枠を節約
+- Google AI Pro（5TB含む）は API の枠を増やさない。上限で止まったら勝手に延長・課金しない（本人が決める）
+- キー: Mac はキーチェーン（set-key.sh）、クラウドは Network secrets。キーの値を扱わない
 
-### Gemini API は節約する
-- 無料枠は1日あたり約20回（モデルごと）。画像・大量資料・GA 以外では使わない
-- 普通の文章・コード・短い要約は Gemini に回さない
+### 3. CLI（どのコマンドで動かすか）
+- `codex`: 実装 `codex exec -s workspace-write -C <作業フォルダ> -o <結果ファイル> "<具体的な指示。対象ファイル・完了条件>"` / レビュー・調査 `codex exec -s read-only -C <作業フォルダ> -o <結果ファイル> "<指示>"`
+  - Bash の timeout は 600000。長くなりそうなら run_in_background
+  - Codex の結果は必ず Claude が差分と動作を確認してから採用する（そのまま報告しない）
+  - codex コマンドが無い環境（クラウドなど）や Codex が失敗したときは、Claude が自分でやる
+- `gask`: Gemini を呼ぶ唯一の入口（`gemini -p` は直接呼ばない）。使い方は下の「Gemini CLI 連携」
+- `agy --mode plan`: 大事な事業判断を Gemini の目でクロスチェック（Pro ログインで動く）
+- `gh`・`netlify` など: 道具。公開・送信の前は確認する
 
 ## Gemini CLI 連携（gask 経由で使う）
 Claude Code はオーケストレーター、Gemini CLI はサブエージェント（GA データアナリスト＋nanobanana 画像生成＋大量資料の要約）。
