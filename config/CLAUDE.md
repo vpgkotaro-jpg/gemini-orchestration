@@ -1,3 +1,24 @@
+## AI の使い分け（窓口は Claude Code）
+Claude Code が窓口。作業ごとに次の担当へ振る。迷ったら Claude が自分でやる。
+
+| 担当 | 任せるもの |
+|---|---|
+| Codex（先に使う） | まとまった実装・リファクタ・テスト作成・コードレビュー（目安: 複数ファイル or 数十行以上） |
+| Claude（窓口＋仕上げ） | 依頼の整理、Codex の結果の確認・手直し、日本語の文章、事業判断、数行の小さな修正 |
+| Gemini API（gask） | 画像・図・アイコンの生成/編集、数万字以上の資料の要約、GA データ分析だけ |
+| Gemini アプリ（本人の Pro） | 手で作る画像・動画、Deep Research、NotebookLM（Claude からは呼ばない。必要なら本人に勧める） |
+
+### Codex の呼び方
+- 実装: `codex exec -s workspace-write -C <作業フォルダ> -o <結果ファイル> "<具体的な指示。対象ファイル・完了条件>"`
+- レビュー・調査: `codex exec -s read-only -C <作業フォルダ> -o <結果ファイル> "<指示>"`
+- Bash の timeout は 600000。長くなりそうなら run_in_background
+- Codex の結果は必ず Claude が差分と動作を確認してから採用する（そのまま報告しない）
+- codex コマンドが無い環境（クラウドなど）や Codex が失敗したときは、Claude が自分でやる
+
+### Gemini API は節約する
+- 無料枠は1日あたり約20回（モデルごと）。画像・大量資料・GA 以外では使わない
+- 普通の文章・コード・短い要約は Gemini に回さない
+
 ## Gemini CLI 連携（gask 経由で使う）
 Claude Code はオーケストレーター、Gemini CLI はサブエージェント（GA データアナリスト＋nanobanana 画像生成＋大量資料の要約）。
 `gemini -p` を直接呼ばず、必ず `gask` を使う（デメリット対策が入っている）。Bash の timeout は 300000〜600000。
