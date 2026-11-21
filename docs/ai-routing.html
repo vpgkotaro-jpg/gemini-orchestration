@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>AIの使い分け</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:1000px;background:#f6f5f1;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;color:#1d1d1b;padding:56px 64px}
+h1{font-size:46px;font-weight:800;letter-spacing:.02em}
+.sub{font-size:21px;color:#6b6a64;margin-top:8px}
+.you{margin:34px auto 0;width:360px;text-align:center;font-size:24px;font-weight:700;background:#fff;border:2px solid #1d1d1b;border-radius:40px;padding:12px}
+.arrow{width:2px;height:28px;background:#1d1d1b;margin:0 auto;position:relative}
+.arrow:after{content:"";position:absolute;bottom:-8px;left:-7px;border:8px solid transparent;border-top:10px solid #1d1d1b}
+.hub{margin:10px auto 0;width:760px;background:#d97757;color:#fff;border-radius:22px;padding:20px 28px;text-align:center}
+.hub b{font-size:32px;display:block}
+.hub span{font-size:20px;opacity:.95}
+.branch{position:relative;height:46px;margin:0 120px}
+.branch:before{content:"";position:absolute;left:0;right:0;top:22px;height:2px;background:#1d1d1b}
+.branch i{position:absolute;top:22px;width:2px;height:24px;background:#1d1d1b}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+.card{background:#fff;border-radius:20px;padding:24px 24px 22px;border-top:10px solid var(--c);box-shadow:0 2px 10px rgba(0,0,0,.06);height:430px;display:flex;flex-direction:column}
+.tag{display:inline-block;align-self:flex-start;font-size:16px;font-weight:700;color:#fff;background:var(--c);border-radius:20px;padding:4px 14px}
+.card h2{font-size:30px;margin:14px 0 4px}
+.role{font-size:19px;color:#6b6a64;margin-bottom:16px}
+.card ul{list-style:none;font-size:20px;line-height:1.5}
+.card li{padding-left:24px;position:relative;margin-bottom:8px}
+.card li:before{content:"";position:absolute;left:4px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--c)}
+.note{margin-top:auto;font-size:17px;background:#f3f2ee;border-radius:12px;padding:10px 14px;color:#45443f;line-height:1.45}
+.foot{margin-top:28px;display:flex;gap:18px;font-size:19px}
+.foot div{flex:1;background:#fff;border-radius:14px;padding:13px 18px;border-left:6px solid #1d1d1b}
+</style></head><body>
+<h1>AIの使い分け</h1>
+<div class="sub">窓口はぜんぶ Claude Code。作業の中身を見て、得意なところに振り分ける</div>
+<div class="you">あなたの依頼</div>
+<div class="arrow"></div>
+<div class="hub"><b>Claude Code（窓口）</b><span>依頼を整理 → 担当を決める → 結果を確認して報告</span></div>
+<div class="branch"><i style="left:12%"></i><i style="left:37.5%"></i><i style="left:62.5%"></i><i style="left:88%"></i></div>
+<div class="cards">
+ <div class="card" style="--c:#2f6fd6"><span class="tag">① 先に使う</span><h2>Codex</h2><div class="role">量の多いコード作業</div>
+  <ul><li>まとまった実装</li><li>リファクタ</li><li>テスト作成</li><li>コードレビュー</li></ul>
+  <div class="note">目安：複数ファイル・数十行以上<br>結果は必ず Claude が確認</div></div>
+ <div class="card" style="--c:#d97757"><span class="tag">② 仕上げ・判断</span><h2>Claude</h2><div class="role">考える・整える</div>
+  <ul><li>Codex の結果の確認・手直し</li><li>日本語の文章</li><li>事業判断</li><li>数行の小さな修正</li></ul>
+  <div class="note">迷ったら Claude が自分でやる<br>Codex が使えない時も Claude</div></div>
+ <div class="card" style="--c:#1f9d6a"><span class="tag">③ ここぞの時だけ</span><h2>Gemini API</h2><div class="role">gask 経由・節約して使う</div>
+  <ul><li>画像・図・アイコンの生成</li><li>数万字以上の資料の要約</li><li>GA データの分析</li></ul>
+  <div class="note">無料枠は1日 約20回/モデル<br>普通の文章・コードには使わない</div></div>
+ <div class="card" style="--c:#7a5cd6"><span class="tag">④ 手でやる</span><h2>Gemini アプリ</h2><div class="role">あなたの Google AI Pro</div>
+  <ul><li>手で作る画像・動画</li><li>Deep Research</li><li>NotebookLM</li></ul>
+  <div class="note">API の枠を使わない<br>必要な時は Claude が勧める</div></div>
+</div>
+<div class="foot"><div>Gemini の数字は自動で裏付けチェック（⚠️ はそのまま使わない）</div><div>1日の上限を超えたら止まる・勝手に延長しない</div></div>
+</body></html>
