@@ -1,0 +1,34 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "gemini-api-key"
+    }
+  },
+  "mcpServers": {
+    "analytics-mcp": {
+      "command": "/root/.local/bin/analytics-mcp",
+      "args": [],
+      "env": {
+        "GOOGLE_PROJECT_ID": "$GOOGLE_PROJECT_ID",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/root/.config/gcloud/application_default_credentials.json",
+        "NO_PROXY": "localhost,127.0.0.1",
+        "no_proxy": "localhost,127.0.0.1"
+      }
+    },
+    "nanobanana": {
+      "command": "node",
+      "args": [
+        "/root/.gemini/extensions/nanobanana/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "NANOBANANA_GEMINI_API_KEY": "$GEMINI_API_KEY"
+      }
+    }
+  },
+  "mcp": {
+    "allowed": [
+      "analytics-mcp",
+      "nanobanana"
+    ]
+  }
+}

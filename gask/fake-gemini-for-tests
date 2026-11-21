@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+import json, sys, os, pathlib
+p = sys.argv[sys.argv.index("-p")+1]
+def e(**k): print(json.dumps(k, ensure_ascii=False))
+e(type="init", model="fake-flash")
+mode = os.environ.get("FAKE_MODE", "analyze")
+if mode == "error":
+    e(type="result", status="error", error={"message":"API key not valid"}); sys.exit(1)
+if mode == "image":
+    d = pathlib.Path("nanobanana-output"); d.mkdir(exist_ok=True); (d/"img1.png").write_bytes(b"x")
+    e(type="tool_use", tool_name="generate_image", tool_id="t1", parameters={"prompt":"x"})
+    e(type="tool_result", tool_id="t1", status="success", output="saved nanobanana-output/img1.png")
+    e(type="message", role="assistant", content="生成しました: nanobanana-output/img1.png", delta=True)
+else:
+    e(type="tool_use", tool_name="run_report", tool_id="t1", parameters={"days":90})
+    e(type="tool_result", tool_id="t1", status="success", output="page,/blog/a,views,12,345\npage,/blog/b,views,8,210")
+    ans = {"answer":"上位は /blog/a（12,345PV）と /blog/b（8,210PV）。合計 20,555PV。/blog/c は 999PV",
+           "key_facts":[{"claim":"/blog/a のPV","value":"12,345","source":"run_report"},
+                        {"claim":"/blog/b のPV","value":"8210","source":"run_report"},
+                        {"claim":"合計PV（計算値）","value":"20555","source":"計算"},
+                        {"claim":"/blog/c のPV","value":"999","source":"run_report"}],
+           "unknowns":["検索キーワードは取得できず"],"assumptions":["過去90日=今日から遡って90日"]}
+    e(type="message", role="assistant", content="```json\n"+json.dumps(ans, ensure_ascii=False)+"\n```", delta=True)
+e(type="result", status="success", stats={"total_tokens":1500,"input_tokens":1200,"output_tokens":300})

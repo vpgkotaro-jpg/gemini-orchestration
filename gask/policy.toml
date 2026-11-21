@@ -1,0 +1,18 @@
+# gask 専用ポリシー: Gemini には「調べる・描く」だけをさせ、こちらのファイルやシェルは触らせない
+[[rule]]
+toolName = "*"
+mcpName = "analytics-mcp"
+decision = "allow"
+priority = 500
+
+[[rule]]
+toolName = "*"
+mcpName = "nanobanana"
+decision = "allow"
+priority = 500
+
+[[rule]]
+toolName = ["run_shell_command", "write_file", "replace", "web_fetch"]
+decision = "deny"
+priority = 900
+denyMessage = "gask: このツールは禁止されています（調査・画像生成のみ許可）"
