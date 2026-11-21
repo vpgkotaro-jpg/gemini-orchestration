@@ -60,7 +60,7 @@ def load(p):
 # ~/.gemini/settings.json
 gs = home / ".gemini" / "settings.json"
 s = load(gs)
-s.setdefault("security", {}).setdefault("auth", {}).setdefault("selectedType", "gemini-api-key")
+s.setdefault("security", {}).setdefault("auth", {})["selectedType"] = "gemini-api-key"  # 古いログイン方式が残っていても API キー方式にそろえる
 mcp = s.setdefault("mcpServers", {})
 amcp_env = {"GOOGLE_PROJECT_ID": "$GOOGLE_PROJECT_ID",
             "GOOGLE_APPLICATION_CREDENTIALS": str(home / ".config/gcloud/application_default_credentials.json")}

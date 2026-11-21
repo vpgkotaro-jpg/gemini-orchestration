@@ -34,7 +34,7 @@ Node.js 20 以上・Python 3.10 以上・git が必要。
 ```bash
 git clone https://github.com/vpgkotaro-jpg/gemini-orchestration ~/gemini-orchestration && bash ~/gemini-orchestration/install.sh
 ```
-そのあと Gemini API キーをシェルの設定（`~/.zshrc` など）に `export GEMINI_API_KEY=...` で入れる。
+そのあと Mac なら `bash ~/gemini-orchestration/set-key.sh` で Gemini API キーを貼る（キーチェーンに保存され、`~/.zshrc` から自動で読み込む）。Linux / WSL は `~/.bashrc` などに `export GEMINI_API_KEY=...`。
 既存の `~/.claude/CLAUDE.md`・`~/.claude/settings.json`・`~/.gemini/settings.json` は上書きせず、必要な部分だけ追記する。
 更新するときは `cd ~/gemini-orchestration && git pull && bash install.sh`。
 
